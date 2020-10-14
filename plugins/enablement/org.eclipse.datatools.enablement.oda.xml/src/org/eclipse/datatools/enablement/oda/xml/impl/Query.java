@@ -8,6 +8,16 @@
  * Contributors:
  *  Actuate Corporation  - initial API and implementation
  *******************************************************************************/
+/*******************************************************************************
+ * Copyright (c) 2004, 2009 Actuate Corporation.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * Contributors:
+ *  Actuate Corporation  - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.datatools.enablement.oda.xml.impl;
 
 import java.math.BigDecimal;
@@ -134,10 +144,13 @@ public class Query implements IQuery
 		if ( this.tableName == null || this.tableName.trim( ).length( ) == 0 )
 			throw new OdaException( Messages.getString( "Query.QueryHasNotBeenPrepared" ) ); //$NON-NLS-1$
 		
-		ResultSet result = new ResultSet( connection, mt,
-				tableName,
-				this.getMaxRows( ));
-	
+		IResultSet result = null;
+		int sizeInM = connection.getXMLSource().getSizeInM();
+		if(sizeInM > 50){
+			result = new ResultSetVTD(connection, mt, tableName, sizeInM);
+		}else {
+			result = new ResultSet( connection, mt, tableName, this.getMaxRows( ));
+		}
 		return result;
 	}
 
