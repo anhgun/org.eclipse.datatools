@@ -1,14 +1,7 @@
-/*******************************************************************************
- * Copyright (c) 2004, 2009 Actuate Corporation.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * Contributors:
- *  Actuate Corporation  - initial API and implementation
- *******************************************************************************/
-
+/*
+ * (c) Copyright 2001-2020 PRODAXIS, S.A.S. All rights reserved.
+ * PRODAXIS PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
 package org.eclipse.datatools.enablement.oda.xml.impl;
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -22,9 +15,8 @@ import org.eclipse.datatools.connectivity.oda.IResultSet;
 import org.eclipse.datatools.connectivity.oda.IResultSetMetaData;
 import org.eclipse.datatools.connectivity.oda.OdaException;
 import org.eclipse.datatools.enablement.oda.xml.i18n.Messages;
-import org.eclipse.datatools.enablement.oda.xml.util.VTDParserConsumer;
 import org.eclipse.datatools.enablement.oda.xml.util.MappedTables;
-import org.eclipse.datatools.enablement.oda.xml.util.RelationInformation;
+import org.eclipse.datatools.enablement.oda.xml.util.VTDParserConsumer;
 import org.eclipse.datatools.enablement.oda.xml.util.XMLSourceFromPath;
 import org.eclipse.datatools.enablement.oda.xml.util.date.DateUtil;
 
@@ -56,8 +48,6 @@ public class ResultSetVTD implements IResultSet
 	
 	private String tableName;
 	
-	private RelationInformation relationInfo;
-	
 	private Connection connection;
 	
 	private static ULocale JRE_DEFAULT_LOCALE = ULocale.getDefault( );
@@ -71,17 +61,12 @@ public class ResultSetVTD implements IResultSet
 	 * @param tableName
 	 * @throws OdaException
 	 */
-	public ResultSetVTD( Connection connection, MappedTables mt, String tableName, int maxRows )
-			throws OdaException
+	public ResultSetVTD( Connection connection, MappedTables mt, String tableName, int maxRows ) throws OdaException
 	{
 		this.mt = mt;
-
 		this.maxRows = maxRows;
-		
-		this.relationInfo = new RelationInformation( mt, true );
 		this.tableName = tableName;
 		this.connection = connection;
-		
 		isClosed = false;
 	}
 
@@ -140,7 +125,7 @@ public class ResultSetVTD implements IResultSet
 		
 		if ( spConsumer == null )
 		{
-			spConsumer = new VTDParserConsumer(mt, relationInfo, (XMLSourceFromPath) connection.getXMLSource( ), tableName );
+			spConsumer = new VTDParserConsumer(mt, (XMLSourceFromPath) connection.getXMLSource( ), tableName );
 		}
 		
 		boolean hasNext = spConsumer.next( );
